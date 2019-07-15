@@ -1,0 +1,33 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: demo-client
+spec:
+  selector:
+    app: demo-client
+  ports:
+    - protocol: TCP
+      port: 8762
+      nodePort: 30001
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-client
+spec:
+  selector:
+    matchLabels:
+      app: demo-client
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: demo-client
+    spec:
+      containers:
+        - name: demo-client
+          image: demo-client:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8762
